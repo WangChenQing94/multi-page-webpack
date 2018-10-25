@@ -1,21 +1,26 @@
-const path = require('path');
-const webpackMerge = require('webpack-merge');
-const htmlWebpackPlugin = require('html-webpack-plugin');
-const wepackConf = require('./webpack.base.conf');
+const merge = require('webpack-merge');
+const webpack = require('webpack');
+const webpackConf = require('./webpack.base.conf');
 
-module.exports = webpackMerge(webpackConf, {
+module.exports = merge(webpackConf, {
+	mode: 'development',
+	devtool: 'inline-source-map',
 	devServer: {
 		host: 'localhost',
-		port: '8080',
+		port: 8888,
 		hot: true,
 		open: false,
-		publicPath: '/',
+		// publicPath: '/',
 		compress: true,
-		contentBase: false
+		contentBase: false,
+		overlay: {
+			warnings: true,
+			errors: true
+		}
 	},
 	plugins: [
-		new htmlWebpackPlugin({
-			title: 'index'
+		new webpack.DefinePlugin({
+			'process.env': require('./conf/dev.env')
 		})
 	]
 })
